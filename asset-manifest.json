@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/tikal-starwars/static/js/main.f647ec18.js",
+    "index.html": "/tikal-starwars/index.html",
+    "main.f647ec18.js.map": "/tikal-starwars/static/js/main.f647ec18.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.f647ec18.js"
+  ]
+}
