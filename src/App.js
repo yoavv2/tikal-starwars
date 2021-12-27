@@ -13,6 +13,7 @@ const AppStyle = styled.div`
   box-sizing: border-box;
 
   background-image: url(https://miukimiu.github.io/star-wars-random-quotes/images/bg.jpg);
+  background-size: cover;
   background-repeat: repeat;
 `;
 
