@@ -25,6 +25,6 @@ export const Headline = styled.th`
   font-weight: 900;
 `;
 export const Detail = styled.td`
+  
   font-size: 1.2em;
-  display: block;
 `;
