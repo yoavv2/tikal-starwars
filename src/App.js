@@ -29,7 +29,7 @@ function App() {
   const { planets } = usePlanetsFetch();
 
   const height = useMemo(() => {
-    const heighst = planets.reduce(
+    const highest = planets.reduce(
       (acc, planet) => {
         if (Number(planet.population) < acc.population) {
           return acc;
@@ -44,7 +44,7 @@ function App() {
     };
 
     const planetsArray = planets.map(
-      (planet) => sqroot(planet.population) / sqroot(heighst.population)
+      (planet) => sqroot(planet.population) / sqroot(highest.population)
     );
 
     return planetsArray;

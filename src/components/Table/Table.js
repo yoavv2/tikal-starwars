@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as S from "./style";
 
 function Table({ vehicles, isLoading }) {
-  const findeToltalPopulation = (vehiclesArray) => {
+  const findTotalPopulation = (vehiclesArray) => {
     const map = {};
 
     vehiclesArray.forEach((vehicle, i) => {
@@ -13,7 +13,7 @@ function Table({ vehicles, isLoading }) {
 
       map[i] = reducer;
     });
-    const HiestPopulatinNum = Object.keys(map).reduce(
+    const highestPopulationNum = Object.keys(map).reduce(
       (acc, key) => {
         if (map[key] > acc.population) {
           return { population: map[key], vehicleIndex: Number(key) };
@@ -22,14 +22,11 @@ function Table({ vehicles, isLoading }) {
       },
       { population: 0 }
     );
-    return vehiclesArray[HiestPopulatinNum.vehicleIndex];
+    return vehiclesArray[highestPopulationNum.vehicleIndex];
   };
 
-  console.log(
-    `findeToltalPopulation(vehicles)`,
-    findeToltalPopulation(vehicles)
-  );
-  const vehicle = findeToltalPopulation(vehicles);
+  console.log(`findTotalPopulation(vehicles)`, findTotalPopulation(vehicles));
+  const vehicle = findTotalPopulation(vehicles);
 
   return (
     <S.Table>

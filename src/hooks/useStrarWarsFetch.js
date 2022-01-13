@@ -5,12 +5,12 @@ export const useStarWarsFetch = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetchvehicles();
+    fetchVehicles();
   }, []);
 
-  useMemo(() => fetchvePilots(), [vehicles]);
+  useMemo(() => fetchPilots(), [vehicles]);
 
-  async function fetchvehicles() {
+  async function fetchVehicles() {
     setIsLoading(true);
     const response1 = await axios.get(`https://swapi.dev/api/vehicles/?page=1`);
     const response2 = await axios.get(`https://swapi.dev/api/vehicles/?page=2`);
@@ -25,7 +25,7 @@ export const useStarWarsFetch = () => {
     ]);
   }
 
-  async function fetchvePilots() {
+  async function fetchPilots() {
     const vePromises = vehicles.map(async (v) => {
       if (v.pilots.length) {
         const promises = v.pilots.map(async (p) => await axios.get(p));
@@ -33,13 +33,13 @@ export const useStarWarsFetch = () => {
         const responseArray = await Promise.all(promises);
 
         v.pilots = responseArray.map(({ data: pilot }) => pilot);
-        const homeworldPromises = v.pilots.map(async (pilot) => {
+        const homeWorldPromises = v.pilots.map(async (pilot) => {
           if (pilot.homeworld) {
             const { data } = await axios.get(pilot.homeworld);
             pilot.homeworld = data;
           }
         });
-        await Promise.all(homeworldPromises);
+        await Promise.all(homeWorldPromises);
       }
     });
     await Promise.all(vePromises);
@@ -48,5 +48,5 @@ export const useStarWarsFetch = () => {
     console.log(vehicles);
   }
 
-  return { vehicles, isLoading, fetchvehicles };
+  return { vehicles, isLoading, fetchVehicles};
 };
