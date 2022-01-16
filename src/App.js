@@ -50,6 +50,7 @@ function App() {
     return planetsArray;
   }, [planets]);
 
+  console.log(`vehicles =>`, vehicles);
   return (
     <AppStyle className="App">
       {!isLoading && <Table vehicles={vehicles} />}

@@ -6,9 +6,9 @@ function Table({ vehicles, isLoading }) {
     const map = {};
 
     vehiclesArray.forEach((vehicle, i) => {
-      const reducer = vehicle.pilots?.reduce((acc, current) => {
-        if (current.homeworld.population === "unknown") return acc;
-        return acc + Number(current.homeworld.population);
+      const reducer = vehicle?.pilots?.reduce((acc, current) => {
+        if (current?.homeworld?.population === "unknown") return acc;
+        return acc + Number(current?.homeworld?.population);
       }, 0);
 
       map[i] = reducer;

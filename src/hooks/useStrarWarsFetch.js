@@ -5,36 +5,42 @@ export const useStarWarsFetch = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetchVehicles();
+    if (vehicles.length === 0) fetchVehicles();
   }, []);
 
-  useMemo(() => fetchPilots(), [vehicles]);
+  useEffect(() => fetchPilots());
 
   async function fetchVehicles() {
     setIsLoading(true);
-    const response1 = await axios.get(`https://swapi.dev/api/vehicles/?page=1`);
-    const response2 = await axios.get(`https://swapi.dev/api/vehicles/?page=2`);
-    const response3 = await axios.get(`https://swapi.dev/api/vehicles/?page=3`);
-    const response4 = await axios.get(`https://swapi.dev/api/vehicles/?page=4`);
 
-    setVehicles([
-      ...response1.data.results,
-      ...response2.data.results,
-      ...response3.data.results,
-      ...response4.data.results,
-    ]);
+    try {
+      let res = await axios.get(`https://swapi.dev/api/vehicles`);
+      let i = 1;
+
+      while (res.data.next) {
+        res = await axios.get(`https://swapi.dev/api/vehicles/?page=${i}`);
+        // let arr = [...res.data.results];
+        setVehicles((prev) => [...prev, ...res.data.results]);
+
+        i++;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async function fetchPilots() {
-    const vePromises = vehicles.map(async (v) => {
-      if (v.pilots.length) {
-        const promises = v.pilots.map(async (p) => await axios.get(p));
+    const vehiclePromises = vehicles.map(async (vehicle) => {
+      if (vehicle?.pilots?.length) {
+        const promises = vehicle.pilots.map(
+          async (pilot) => await axios.get(pilot)
+        );
 
         const responseArray = await Promise.all(promises);
 
-        v.pilots = responseArray.map(({ data: pilot }) => pilot);
-        const homeWorldPromises = v.pilots.map(async (pilot) => {
-          if (pilot.homeworld) {
+        vehicle.pilots = responseArray.map(({ data: pilot }) => pilot);
+        const homeWorldPromises = vehicle.pilots.map(async (pilot) => {
+          if (pilot?.homeworld) {
             const { data } = await axios.get(pilot.homeworld);
             pilot.homeworld = data;
           }
@@ -42,11 +48,10 @@ export const useStarWarsFetch = () => {
         await Promise.all(homeWorldPromises);
       }
     });
-    await Promise.all(vePromises);
+    await Promise.all(vehiclePromises);
 
     setIsLoading(false);
-    console.log(vehicles);
   }
 
-  return { vehicles, isLoading, fetchVehicles};
+  return { vehicles, isLoading, fetchVehicles };
 };
